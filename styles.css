@@ -1,5 +1,5 @@
 :root {
-  --app-background-color: #ffffff;
+  --app-background-color: rgba(0, 0, 0, 0.9);
   --block-background-color: #f0f0f0;
   --block-border-color: #cccccc;
   --block-name-color: #000000;
