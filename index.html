@@ -78,7 +78,7 @@
       ></export-settings-modal>
       <import-settings-modal
         v-if="showImport"
-        :import-json="importJson"
+        v-model:import-json="importJson"
         @import="importSettings"
         @close="showImport = false"
       ></import-settings-modal>

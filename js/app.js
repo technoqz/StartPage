@@ -245,6 +245,7 @@ const app = createApp({
       };
 
       const importSettings = () => {
+         //console.log('Importing settings - importJson:', importJson.value); // Debug
          try {
             const parsed = JSON.parse(importJson.value);
             state.columns = parsed.columns;
@@ -256,6 +257,7 @@ const app = createApp({
             showImport.value = false;
          } catch (error) {
             alert('Invalid JSON');
+            console.log('Import error:', error);
          }
       };
 

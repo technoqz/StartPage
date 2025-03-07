@@ -1,14 +1,19 @@
 const importSettingsModal = {
    props: ['importJson'],
-   emits: ['import', 'close'],
+   emits: ['import', 'close', 'update:importJson'],
    setup(props, { emit }) {
+      const updateImportJson = (event) => {
+         emit('update:importJson', event.target.value);
+      };
+
       return {
          importSettings() {
             emit('import');
          },
          closeModal() {
             emit('close');
-         }
+         },
+         updateImportJson
       };
    },
    template: `
@@ -16,7 +21,7 @@ const importSettingsModal = {
        <div class="modal-overlay v-cloak" @click="closeModal"></div>
        <div class="modal v-cloak">
          <h2>Import Settings</h2>
-         <textarea v-model="importJson" placeholder="Paste JSON here"></textarea>
+         <textarea :value="importJson" @input="updateImportJson" placeholder="Paste JSON here"></textarea>
          <button @click="importSettings">Import</button>
          <button @click="closeModal">Cancel</button>
        </div>
