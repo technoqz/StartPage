@@ -297,20 +297,34 @@ const app = createApp({
             if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
 
             let xmlText = await response.text();
-            xmlText = xmlText.replace(/[\x00-\x1F\x7F-\x9F]/g, '');
+            xmlText = xmlText.replace(/[\x00-\x1F\x7F-\x9F]/g, ''); // Sanitize control characters
             const parser = new DOMParser();
             const xmlDoc = parser.parseFromString(xmlText, 'text/xml');
             if (xmlDoc.querySelector('parsererror')) {
                throw new Error('XML parsing failed after sanitization');
             }
 
-            const items = Array.from(xmlDoc.querySelectorAll('item')).map(item => ({
-               title: item.querySelector('title')?.textContent || '',
-               link: item.querySelector('link')?.textContent || '',
-               pubDate: item.querySelector('pubDate')?.textContent || '',
-               description: stripHtml(item.querySelector('description')?.textContent || '')
-            }));
+            // Check if it's an Atom feed (has <feed> root) or RSS (<rss> root)
+            let items = [];
+            if (xmlDoc.querySelector('feed')) {
+               // Atom feed (e.g., Reddit)
+               items = Array.from(xmlDoc.querySelectorAll('entry')).map(entry => ({
+                  title: entry.querySelector('title')?.textContent || '',
+                  link: entry.querySelector('link')?.getAttribute('href') || '',
+                  pubDate: entry.querySelector('updated')?.textContent || '',
+                  description: stripHtml(entry.querySelector('content')?.textContent || '')
+               }));
+            } else {
+               // Traditional RSS feed
+               items = Array.from(xmlDoc.querySelectorAll('item')).map(item => ({
+                  title: item.querySelector('title')?.textContent || '',
+                  link: item.querySelector('link')?.textContent || '',
+                  pubDate: item.querySelector('pubDate')?.textContent || '',
+                  description: stripHtml(item.querySelector('description')?.textContent || '')
+               }));
+            }
 
+            //console.log('Fetched items from direct feed:', items); // Debug log
             return items;
          } catch (error) {
             console.error('Error fetching feed via proxy:', feedUrl, error);
