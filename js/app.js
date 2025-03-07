@@ -166,6 +166,7 @@ const app = createApp({
          } else if (tempBlock.value.type === 'Bookmarks') {
             bookmarksText.value = tempBlock.value.bookmarks ? tempBlock.value.bookmarks.map(b => b.name ? `${b.name}####${b.url}` : b.url).join('\n') : '';
          }
+         //console.log('Opened settings - bookmarksText:', bookmarksText.value); // Debug
       };
 
       const saveSettings = () => {

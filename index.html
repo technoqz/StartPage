@@ -59,8 +59,8 @@
       <block-settings-modal
         v-if="editingBlock"
         :block="editingBlock"
-        :feeds-text="feedsText"
-        :bookmarks-text="bookmarksText"
+        v-model:feeds-text="feedsText"
+        v-model:bookmarks-text="bookmarksText"
         @save="saveSettings"
         @cancel="cancelSettings"
       ></block-settings-modal>

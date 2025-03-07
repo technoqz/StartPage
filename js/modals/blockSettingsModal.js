@@ -1,14 +1,23 @@
 const blockSettingsModal = {
    props: ['block', 'feedsText', 'bookmarksText'],
-   emits: ['save', 'cancel'],
+   emits: ['save', 'cancel', 'update:feedsText', 'update:bookmarksText'],
    setup(props, { emit }) {
+      const updateFeedsText = (event) => {
+         emit('update:feedsText', event.target.value);
+      };
+      const updateBookmarksText = (event) => {
+         emit('update:bookmarksText', event.target.value);
+      };
+
       return {
          saveSettings() {
             emit('save');
          },
          cancelSettings() {
             emit('cancel');
-         }
+         },
+         updateFeedsText,
+         updateBookmarksText
       };
    },
    template: `
@@ -30,7 +39,7 @@ const blockSettingsModal = {
          <div v-if="block.type === 'RSS'">
            <label>
              Feeds (one per line):
-             <textarea v-model="feedsText" placeholder="Enter RSS feed URLs"></textarea>
+             <textarea :value="feedsText" @input="updateFeedsText" placeholder="Enter RSS feed URLs"></textarea>
            </label>
            <label>
              Content Limit:
@@ -40,7 +49,7 @@ const blockSettingsModal = {
          <div v-if="block.type === 'Bookmarks'">
            <label>
              Bookmarks (one per line, format: name####url):
-             <textarea v-model="bookmarksText" placeholder="Enter bookmark URLs or name####url"></textarea>
+             <textarea :value="bookmarksText" @input="updateBookmarksText" placeholder="Enter bookmark URLs or name####url"></textarea>
            </label>
          </div>
          <button @click="saveSettings">Save settings</button>
