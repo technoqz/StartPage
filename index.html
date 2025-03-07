@@ -42,9 +42,10 @@
             <div v-if="block.type === 'Bookmarks'">
               <p v-if="!block.bookmarks.length">No bookmarks added yet.</p>
               <div v-for="bookmark in block.bookmarks" :key="bookmark.url">
-                <a :href="bookmark.url" target="_blank"
-                  >{{ bookmark.name || bookmark.url }}</a
-                >
+                <a :href="bookmark.url" target="_blank">
+                  <span v-html="getIcon(bookmark.url)"></span
+                  ><span>{{ bookmark.name || bookmark.url }}</span>
+                </a>
               </div>
             </div>
             <div v-else-if="block.type === 'RSS'">

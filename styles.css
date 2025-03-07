@@ -66,6 +66,18 @@ body {
   top: 10px;
   right: 10px;
 }
+.block.bookmarks a {
+  text-decoration: none;
+  line-height: 20px;
+}
+
+.block img.bookmark-icon {
+  width: 16px;
+  height: 16px;
+  font-size: 16px;
+  padding-right: 10px;
+}
+
 button {
   background-color: var(--button-background-color);
   color: var(--button-text-color);

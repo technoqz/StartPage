@@ -284,67 +284,6 @@ const app = createApp({
          }
       };
 
-      const fetchFeedDirect2 = async (feedUrl) => {
-         try {
-            if (!state.globalSettings.corsProxyUrl) {
-               throw new Error('CORS Proxy URL is not set in Global Settings');
-            }
-            const proxyUrl = `${state.globalSettings.corsProxyUrl}?url=${encodeURIComponent(feedUrl)}`;
-            const response = await fetch(proxyUrl, {
-               headers: { 'Accept': 'text/plain' } // Force text/plain
-            });
-            if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
-            const xmlText = await response.text();
-            console.log('Raw XML Response:', xmlText); // Debug
-            const parser = new DOMParser();
-            const xmlDoc = parser.parseFromString(xmlText, 'text/xml');
-            const items = Array.from(xmlDoc.querySelectorAll('item')).map(item => ({
-               title: item.querySelector('title')?.textContent || '',
-               link: item.querySelector('link')?.textContent || '',
-               pubDate: item.querySelector('pubDate')?.textContent || '',
-               description: stripHtml(item.querySelector('description')?.textContent || '')
-            }));
-            return items;
-         } catch (error) {
-            console.error('Error fetching feed via proxy:', feedUrl, error);
-            alert(`Failed to fetch ${feedUrl}: ${error.message}. Please check the CORS Proxy URL in Global Settings.`);
-            return [];
-         }
-      };
-
-      const fetchFeedDirect_html = async (feedUrl) => {
-         try {
-            const proxyUrl = `${state.globalSettings.corsProxyUrl}?url=${encodeURIComponent(feedUrl)}`;
-            const response = await fetch(proxyUrl);
-            if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
-
-            const xmlText = await response.text();
-            //console.log('Raw XML:', xmlText); // Debug
-
-            // Parse as HTML (more lenient)
-            const parser = new DOMParser();
-            const htmlDoc = parser.parseFromString(xmlText, 'text/html');
-
-            // Extract items using querySelector on the HTML DOM
-            const items = Array.from(htmlDoc.querySelectorAll('item')).map(item => ({
-               title: item.querySelector('title')?.textContent || '',
-               link: item.querySelector('link')?.textContent || '',
-               pubDate: item.querySelector('pubDate')?.textContent || '',
-               description: item.querySelector('description')?.textContent || ''
-            }));
-
-            if (items.length === 0) {
-               console.warn('No items found; feed may still be malformed.');
-            }
-
-            return items;
-         } catch (error) {
-            console.error('Error fetching or parsing feed:', feedUrl, error);
-            alert(`Failed to fetch ${feedUrl}: ${error.message}. Check your CORS proxy settings.`);
-            return [];
-         }
-      };
-
       const fetchFeedDirect = async (feedUrl) => {
          try {
             if (!state.globalSettings.corsProxyUrl) {
@@ -420,6 +359,14 @@ const app = createApp({
          return text;
       };
 
+      const getIcon = (url) => {
+         if (url.length > 0) {
+            let host = new URL(url).host;
+
+            return `<img class="bookmark-icon" src="https://f.start.me/${host}" alt="" />`
+         }
+      }
+
       onMounted(() => {
          loadState();
          applyStyles();
@@ -454,7 +401,8 @@ const app = createApp({
          openImportSettings,
          importSettings,
          getBlockRssItems,
-         truncate
+         truncate,
+         getIcon
       };
    }
 });
