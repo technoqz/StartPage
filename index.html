@@ -55,7 +55,7 @@
               </p>
               <div v-for="item in getBlockRssItems(block)" :key="item.link">
                 <a :href="item.link" target="_blank">{{ item.title }}</a>
-                <p v-if="block.contentLimit > 0">
+                <p class="block-item-description" v-if="block.contentLimit > 0">
                   {{ truncate(item.description, block.contentLimit) }}
                 </p>
               </div>

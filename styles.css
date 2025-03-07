@@ -41,6 +41,15 @@ body {
   margin-bottom: 10px;
   position: relative;
   border-radius: 4px;
+
+  background: linear-gradient(
+      180deg,
+      rgba(231, 231, 231, 0.4) 0%,
+      rgba(202, 202, 202, 0.1) 10%,
+      rgba(223, 223, 223, 0.1) 90%,
+      rgba(242, 242, 242, 0.4) 100%
+    ),
+    var(--block-background-color);
 }
 .block.dragging {
   opacity: 0.5;
@@ -76,6 +85,10 @@ body {
   height: 16px;
   font-size: 16px;
   padding-right: 10px;
+}
+
+.block p.block-item-description {
+  margin-top: 5px;
 }
 
 button {

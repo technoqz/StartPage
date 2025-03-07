@@ -359,6 +359,7 @@ const app = createApp({
          return text;
       };
 
+      // get Favicon of the domain by third-party service(temp solution)
       const getIcon = (url) => {
          if (url.length > 0) {
             let host = new URL(url).host;
