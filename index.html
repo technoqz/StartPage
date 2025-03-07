@@ -40,188 +40,57 @@
               <button @click="openSettings(block)">Settings</button>
               <button @click="deleteBlock(column, block)">Delete</button>
             </div>
-            <div v-if="block.type === 'Bookmarks'">
-              <p v-if="!block.bookmarks.length">No bookmarks added yet.</p>
-              <div v-for="bookmark in block.bookmarks" :key="bookmark.url">
-                <a :href="bookmark.url" target="_blank">
-                  <span v-html="getIcon(bookmark.url)"></span
-                  ><span>{{ bookmark.name || bookmark.url }}</span>
-                </a>
-              </div>
-            </div>
-            <div v-else-if="block.type === 'RSS'">
-              <p v-if="!getBlockRssItems(block).length">
-                No RSS items available.
-              </p>
-              <div v-for="item in getBlockRssItems(block)" :key="item.link">
-                <a :href="item.link" target="_blank">{{ item.title }}</a>
-                <p class="block-item-description" v-if="block.contentLimit > 0">
-                  {{ truncate(item.description, block.contentLimit) }}
-                </p>
-              </div>
-            </div>
+            <bookmark-block
+              v-if="block.type === 'Bookmarks'"
+              :bookmarks="block.bookmarks"
+            ></bookmark-block>
+            <rss-block
+              v-else-if="block.type === 'RSS'"
+              :items="getBlockRssItems(block)"
+              :content-limit="block.contentLimit"
+            ></rss-block>
           </div>
           <button class="add-row-button" @click="addBlockToColumn(column)">
             Add row block
           </button>
         </div>
       </div>
-      <!-- Block Settings Modal -->
-      <div
+      <!-- Modal Components -->
+      <block-settings-modal
         v-if="editingBlock"
-        class="modal-overlay v-cloak"
-        @click="cancelSettings"
-      ></div>
-      <div v-if="editingBlock" class="modal v-cloak">
-        <h2>Block Settings</h2>
-        <label>
-          Name:
-          <input v-model="editingBlock.name" placeholder="Enter block name" />
-        </label>
-        <label>
-          Type:
-          <select v-model="editingBlock.type">
-            <option value="RSS">RSS</option>
-            <option value="Bookmarks">Bookmarks</option>
-          </select>
-        </label>
-        <div v-if="editingBlock.type === 'RSS'">
-          <label>
-            Feeds (one per line):
-            <textarea
-              v-model="feedsText"
-              placeholder="Enter RSS feed URLs"
-            ></textarea>
-          </label>
-          <label>
-            Content Limit:
-            <input
-              type="number"
-              v-model="editingBlock.contentLimit"
-              min="0"
-              placeholder="0 for headers only"
-            />
-          </label>
-        </div>
-        <div v-if="editingBlock.type === 'Bookmarks'">
-          <label>
-            Bookmarks (one per line, format: name####url):
-            <textarea
-              v-model="bookmarksText"
-              placeholder="Enter bookmark URLs or name####url"
-            ></textarea>
-          </label>
-        </div>
-        <button @click="saveSettings">Save settings</button>
-        <button @click="cancelSettings">Cancel</button>
-      </div>
-      <!-- Global Settings Modal -->
-      <div
+        :block="editingBlock"
+        :feeds-text="feedsText"
+        :bookmarks-text="bookmarksText"
+        @save="saveSettings"
+        @cancel="cancelSettings"
+      ></block-settings-modal>
+      <global-settings-modal
         v-if="showGlobalSettings"
-        class="modal-overlay v-cloak"
-        @click="cancelGlobalSettings"
-      ></div>
-      <div v-if="showGlobalSettings" class="modal v-cloak">
-        <h2>Global Settings</h2>
-        <label>
-          RSS Fetch Method:
-          <select v-model="tempGlobalSettings.rssFetchMethod">
-            <option value="api">Via api.rss2json.com</option>
-            <option value="direct">Directly via Proxy</option>
-          </select>
-        </label>
-        <label>
-          CORS Proxy URL:
-          <input
-            v-model="tempGlobalSettings.corsProxyUrl"
-            placeholder="e.g., http://yourdomain.com/rss_proxy.php"
-          />
-        </label>
-        <label>
-          Update Frequency (minutes):
-          <input
-            type="number"
-            v-model="tempGlobalSettings.updateFrequency"
-            min="1"
-          />
-        </label>
-        <label>
-          Max Items per Feed:
-          <input
-            type="number"
-            v-model="tempGlobalSettings.maxItemsPerFeed"
-            min="1"
-          />
-        </label>
-        <label>
-          App Background Color:
-          <input type="color" v-model="tempGlobalSettings.appBackgroundColor" />
-        </label>
-        <label>
-          Block Background Color:
-          <input
-            type="color"
-            v-model="tempGlobalSettings.blockBackgroundColor"
-          />
-        </label>
-        <label>
-          Block Name Color:
-          <input type="color" v-model="tempGlobalSettings.blockNameColor" />
-        </label>
-        <label>
-          Block Border Color:
-          <input type="color" v-model="tempGlobalSettings.blockBorderColor" />
-        </label>
-        <label>
-          RSS Header Color:
-          <input type="color" v-model="tempGlobalSettings.rssHeaderColor" />
-        </label>
-        <label>
-          RSS Text Color:
-          <input type="color" v-model="tempGlobalSettings.rssTextColor" />
-        </label>
-        <label>
-          Button Background Color:
-          <input
-            type="color"
-            v-model="tempGlobalSettings.buttonBackgroundColor"
-          />
-        </label>
-        <label>
-          Button Text Color:
-          <input type="color" v-model="tempGlobalSettings.buttonTextColor" />
-        </label>
-        <button @click="saveGlobalSettings">Save</button>
-        <button @click="cancelGlobalSettings">Cancel</button>
-      </div>
-      <!-- Export Settings Modal -->
-      <div
+        :settings="tempGlobalSettings"
+        @save="saveGlobalSettings"
+        @cancel="cancelGlobalSettings"
+      ></global-settings-modal>
+      <export-settings-modal
         v-if="showExport"
-        class="modal-overlay v-cloak"
-        @click="showExport = false"
-      ></div>
-      <div v-if="showExport" class="modal v-cloak">
-        <h2>Export Settings</h2>
-        <textarea readonly :value="exportJson"></textarea>
-        <button @click="copyToClipboard">Copy to clipboard</button>
-        <button @click="showExport = false">Close</button>
-      </div>
-      <!-- Import Settings Modal -->
-      <div
+        :export-json="exportJson"
+        @close="showExport = false"
+        @copy="copyToClipboard"
+      ></export-settings-modal>
+      <import-settings-modal
         v-if="showImport"
-        class="modal-overlay v-cloak"
-        @click="showImport = false"
-      ></div>
-      <div v-if="showImport" class="modal v-cloak">
-        <h2>Import Settings</h2>
-        <textarea v-model="importJson" placeholder="Paste JSON here"></textarea>
-        <button @click="importSettings">Import</button>
-        <button @click="showImport = false">Cancel</button>
-      </div>
+        :import-json="importJson"
+        @import="importSettings"
+        @close="showImport = false"
+      ></import-settings-modal>
     </div>
 
-    <!-- <script src="https://unpkg.com/vue@3"></script> -->
     <script src="https://unpkg.com/vue@3.5.13/dist/vue.global.prod.js"></script>
-    <script src="app.js"></script>
+    <script src="./js/bloks/bookmarkBlock.js"></script>
+    <script src="./js/bloks/rssBlock.js"></script>
+    <script src="./js/modals/blockSettingsModal.js"></script>
+    <script src="./js/modals/globalSettingsModal.js"></script>
+    <script src="./js/modals/exportSettingsModal.js"></script>
+    <script src="./js/modals/importSettingsModal.js"></script>
+    <script src="./js/app.js"></script>
   </body>
 </html>

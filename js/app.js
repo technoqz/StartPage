@@ -88,7 +88,7 @@ const app = createApp({
          };
          state.columns.push(newColumn);
          state.nextColumnId++;
-         addBlockToColumn(newColumn); // Automatically add a block to the new column
+         addBlockToColumn(newColumn);
          saveState();
       };
 
@@ -294,8 +294,7 @@ const app = createApp({
             if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
 
             let xmlText = await response.text();
-            xmlText = xmlText.replace(/[\x00-\x1F\x7F-\x9F]/g, ''); // Remove control characters
-
+            xmlText = xmlText.replace(/[\x00-\x1F\x7F-\x9F]/g, '');
             const parser = new DOMParser();
             const xmlDoc = parser.parseFromString(xmlText, 'text/xml');
             if (xmlDoc.querySelector('parsererror')) {
@@ -352,22 +351,6 @@ const app = createApp({
             .slice(0, state.globalSettings.maxItemsPerFeed);
       };
 
-      const truncate = (text, limit) => {
-         if (text && text.length > limit) {
-            return text.substring(0, limit) + '...';
-         }
-         return text;
-      };
-
-      // get Favicon of the domain by third-party service(temp solution)
-      const getIcon = (url) => {
-         if (url.length > 0) {
-            let host = new URL(url).host;
-
-            return `<img class="bookmark-icon" src="https://f.start.me/${host}" alt="" />`
-         }
-      }
-
       onMounted(() => {
          loadState();
          applyStyles();
@@ -401,11 +384,17 @@ const app = createApp({
          copyToClipboard,
          openImportSettings,
          importSettings,
-         getBlockRssItems,
-         truncate,
-         getIcon
+         getBlockRssItems
       };
    }
 });
+
+// Register components
+app.component('bookmark-block', bookmarkBlock);
+app.component('rss-block', rssBlock);
+app.component('block-settings-modal', blockSettingsModal);
+app.component('global-settings-modal', globalSettingsModal);
+app.component('export-settings-modal', exportSettingsModal);
+app.component('import-settings-modal', importSettingsModal);
 
 app.mount('#app');
