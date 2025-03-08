@@ -91,6 +91,11 @@ body {
   margin-top: 5px;
 }
 
+span.block-item-date {
+  color: rgb(90, 90, 90);
+  font-size: 13px;
+}
+
 button {
   background-color: var(--button-background-color);
   color: var(--button-text-color);
