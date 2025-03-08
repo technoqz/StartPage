@@ -5,7 +5,7 @@ Super simple starting page for any modern browser with bookmarks and RSS feeds.
 ## Features
 - Two types of blocks: Bookmarks and RSS
 - One RSS block may contain multiple RSS feeds.
-- Customizable interface. From 0 to a maximum of 5 columns. From 0 to infinity of blocks in one column.
+- Customizable interface. From 1 to a maximum of 5 columns. From 1 to infinity of blocks in one column.
 - Theme color settings
 - Import\Export settings(json format)
 - Drag and drop support
