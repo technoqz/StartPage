@@ -1,4 +1,4 @@
-const { createApp, ref, reactive, onMounted, computed } = Vue;
+const { createApp, ref, reactive, onMounted, onUnmounted, computed, watch } = Vue;
 
 const app = createApp({
    setup() {
@@ -10,7 +10,7 @@ const app = createApp({
          globalSettings: {
             rssFetchMethod: 'api',
             corsProxyUrl: '',
-            updateFrequency: 30,
+            updateFrequency: 30, // In minutes
             maxItemsPerFeed: 30,
             appBackgroundColor: '#ffffff',
             blockBackgroundColor: '#f0f0f0',
@@ -35,6 +35,7 @@ const app = createApp({
 
       let draggedBlock = null;
       let sourceColumn = null;
+      let updateInterval = null; // To store the interval ID
 
       const exportJson = computed(() => {
          const exportData = {
@@ -166,7 +167,6 @@ const app = createApp({
          } else if (tempBlock.value.type === 'Bookmarks') {
             bookmarksText.value = tempBlock.value.bookmarks ? tempBlock.value.bookmarks.map(b => b.name ? `${b.name}####${b.url}` : b.url).join('\n') : '';
          }
-         //console.log('Opened settings - bookmarksText:', bookmarksText.value); // Debug
       };
 
       const saveSettings = () => {
@@ -245,7 +245,6 @@ const app = createApp({
       };
 
       const importSettings = () => {
-         //console.log('Importing settings - importJson:', importJson.value); // Debug
          try {
             const parsed = JSON.parse(importJson.value);
             state.columns = parsed.columns;
@@ -262,9 +261,16 @@ const app = createApp({
       };
 
       const stripHtml = (html) => {
-         const tmp = document.createElement('div');
-         tmp.innerHTML = html;
-         return tmp.textContent || tmp.innerText || '';
+
+         let text = html.replace(/(<([^>]+)>)/g, ""); // Remove HTML tags
+         text = text.replace(/&amp;/g, "&")
+            .replace(/&lt;/g, "<")
+            .replace(/&gt;/g, ">")
+            .replace(/&quot;/g, '"')
+            .replace(/&#39;/g, "'")
+            .replace(/&#x27;/g, "'"); // Common entities
+
+         return text.trim(); // Remove extra whitespace
       };
 
       const fetchFeedApi = async (feedUrl) => {
@@ -288,6 +294,8 @@ const app = createApp({
       };
 
       const fetchFeedDirect = async (feedUrl) => {
+         //console.log("fetchFeedDirect");
+
          try {
             if (!state.globalSettings.corsProxyUrl) {
                throw new Error('CORS Proxy URL is not set in Global Settings');
@@ -323,12 +331,10 @@ const app = createApp({
                   description: stripHtml(item.querySelector('description')?.textContent || '')
                }));
             }
-
-            //console.log('Fetched items from direct feed:', items); // Debug log
             return items;
          } catch (error) {
             console.error('Error fetching feed via proxy:', feedUrl, error);
-            //alert(`Failed to fetch ${feedUrl}: ${error.message}. Please check the CORS Proxy URL in Global Settings.`);
+            alert(`Failed to fetch ${feedUrl}: ${error.message}. Please check the CORS Proxy URL in Global Settings.`);
             return [];
          }
       };
@@ -364,14 +370,40 @@ const app = createApp({
       const getBlockRssItems = (block) => {
          if (block.type !== 'RSS' || !block.feeds) return [];
          const allItems = block.feeds.flatMap(feedUrl => state.rssData[feedUrl]?.items || []);
+         //console.log('Items passed to rssBlock:', allItems); // Debug log
          return allItems.sort((a, b) => new Date(b.pubDate) - new Date(a.pubDate))
             .slice(0, state.globalSettings.maxItemsPerFeed);
+      };
+
+      // Setup automatic RSS updates
+      const setupFeedUpdateInterval = () => {
+         if (updateInterval) {
+            clearInterval(updateInterval); // Clear existing interval
+         }
+         const intervalMs = state.globalSettings.updateFrequency * 60 * 1000; // Convert minutes to milliseconds
+         updateInterval = setInterval(() => {
+            console.log('Auto-updating RSS feeds at:', new Date().toISOString()); // Debug log
+            updateFeeds();
+         }, intervalMs);
       };
 
       onMounted(() => {
          loadState();
          applyStyles();
-         updateFeeds();
+         updateFeeds(); // Initial fetch
+         setupFeedUpdateInterval(); // Start auto-updates
+      });
+
+      onUnmounted(() => {
+         if (updateInterval) {
+            clearInterval(updateInterval); // Cleanup on unmount
+         }
+      });
+
+      // Watch for changes to updateFrequency and adjust the interval
+      watch(() => state.globalSettings.updateFrequency, (newValue, oldValue) => {
+         console.log(`Update frequency changed from ${oldValue} to ${newValue} minutes`);
+         setupFeedUpdateInterval(); // Reset interval with new frequency
       });
 
       return {
