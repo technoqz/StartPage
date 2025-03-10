@@ -334,7 +334,7 @@ const app = createApp({
             return items;
          } catch (error) {
             console.error('Error fetching feed via proxy:', feedUrl, error);
-            alert(`Failed to fetch ${feedUrl}: ${error.message}. Please check the CORS Proxy URL in Global Settings.`);
+            //alert(`Failed to fetch ${feedUrl}: ${error.message}. Please check the CORS Proxy URL in Global Settings.`);
             return [];
          }
       };
