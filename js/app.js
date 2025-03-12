@@ -382,7 +382,7 @@ const app = createApp({
          }
          const intervalMs = state.globalSettings.updateFrequency * 60 * 1000; // Convert minutes to milliseconds
          updateInterval = setInterval(() => {
-            console.log('Auto-updating RSS feeds at:', new Date().toISOString()); // Debug log
+            //console.log('Auto-updating RSS feeds at:', new Date().toISOString()); // Debug log
             updateFeeds();
          }, intervalMs);
       };
