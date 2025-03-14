@@ -12,14 +12,16 @@ const app = createApp({
             corsProxyUrl: '',
             updateFrequency: 30, // In minutes
             maxItemsPerFeed: 30,
-            appBackgroundColor: '#ffffff',
-            blockBackgroundColor: '#f0f0f0',
-            blockNameColor: '#000000',
-            blockBorderColor: '#cccccc',
+            appBackgroundColor: '#392e5a',
+            blockBackgroundColor: '#dbdbdb',
+            blockNameColor: '#928043',
+            blockBorderColor: '#f3f3f3',
             rssHeaderColor: '#000000',
             rssTextColor: '#333333',
-            buttonBackgroundColor: '#f0f0f0',
-            buttonTextColor: '#000000'
+            buttonBackgroundColor: '#d2d2d2',
+            buttonTextColor: '#575757',
+            rssblockHeaderFontSize: 16,
+            rssblockDescriptionFontSize: 15,
          }
       });
 
@@ -229,6 +231,10 @@ const app = createApp({
          root.style.setProperty('--rss-text-color', state.globalSettings.rssTextColor);
          root.style.setProperty('--button-background-color', state.globalSettings.buttonBackgroundColor);
          root.style.setProperty('--button-text-color', state.globalSettings.buttonTextColor);
+
+         root.style.setProperty('--rssblock-header-font-size', state.globalSettings.rssblockHeaderFontSize + 'px');
+         root.style.setProperty('--rssblock-description-font-size', state.globalSettings.rssblockDescriptionFontSize + 'px');
+
       };
 
       const openExportSettings = () => {

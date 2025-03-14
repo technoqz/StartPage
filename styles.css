@@ -1,3 +1,4 @@
+/* Global styles */
 :root {
   --app-background-color: rgba(0, 0, 0, 0.9);
   --block-background-color: #f0f0f0;
@@ -7,6 +8,8 @@
   --rss-text-color: #333333;
   --button-background-color: #f0f0f0;
   --button-text-color: #000000;
+  --rssblock-header-font-size: 16px;
+  --rssblock-description-font-size: 15px;
 }
 body {
   background-color: var(--app-background-color);
@@ -17,12 +20,66 @@ body {
   display: none;
 }
 
+label {
+  display: block;
+  margin: 10px 0;
+}
+textarea {
+  width: 100%;
+  height: 100px;
+}
+
+.modal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: white;
+  padding: 20px;
+  border: 1px solid #ccc;
+  z-index: 1000;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+  border-radius: 4px;
+}
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 999;
+}
+.modal button{
+   margin: 5px 5px 5px 0px;
+}
+
+button {
+  background-color: var(--button-background-color);
+  color: var(--button-text-color);
+  padding: 5px 10px;
+  /* margin: 5px;  */
+  border: none;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+button:hover {
+  opacity: 0.8;
+}
+
 .top-buttons {
   margin-left: 5px;
-  display: flex; /* Enable flexbox */
+  display: flex; 
   justify-content: start;
-  padding-bottom: 5px; /* Optional: adds some breathing room */
+  
+  padding-bottom: 5px; 
 }
+
+.top-buttons button {
+   margin: 5px; 
+}
+
 .columns-container {
   display: flex;
   flex-wrap: nowrap;
@@ -75,6 +132,25 @@ body {
   top: 10px;
   right: 10px;
 }
+
+.block-buttons button{
+   margin-right: 5px;
+   opacity: 0.5;
+}
+
+.block-buttons button:hover{
+   margin-right: 5px;
+   opacity: 1;
+}
+
+button.add-row-button{
+   opacity: 0.5;
+}
+
+button.add-row-button:hover{
+   opacity: 1;
+}
+
 .block.bookmarks a {
   text-decoration: none;
   line-height: 20px;
@@ -87,57 +163,19 @@ body {
   padding-right: 10px;
 }
 
-.block p.block-item-description {
-  margin-top: 5px;
+.rssblock a.rssblock-item-title{
+   font-size: var(--rssblock-header-font-size);
 }
 
-span.block-item-date {
+.rssblock p.rssblock-item-description {
+  margin-top: 5px;
+  font-size: var(--rssblock-description-font-size);
+}
+
+.rssblock span.rssblock-item-date {
   color: rgb(90, 90, 90);
   font-size: 13px;
 }
 
-button {
-  background-color: var(--button-background-color);
-  color: var(--button-text-color);
-  padding: 5px 10px;
-  margin: 5px;
-  border: none;
-  cursor: pointer;
-  border-radius: 4px;
-}
-.add-row-button,
-.add-column-button {
-  margin: 0;
-}
-button:hover {
-  opacity: 0.8;
-}
-.modal {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  background: white;
-  padding: 20px;
-  border: 1px solid #ccc;
-  z-index: 1000;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-  border-radius: 4px;
-}
-.modal-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.5);
-  z-index: 999;
-}
-label {
-  display: block;
-  margin: 10px 0;
-}
-textarea {
-  width: 100%;
-  height: 100px;
-}
+
+

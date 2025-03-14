@@ -27,12 +27,12 @@ const rssBlock = {
       return { truncate, convertDateFormat };
    },
    template: `
-     <div>
+     <div class="rssblock">
        <p v-if="!items.length">No RSS items available.</p>
        <div v-for="item in items" :key="item.link">
-         <a :href="item.link" target="_blank">{{ item.title }}  <span class="block-item-date">[{{convertDateFormat(item.pubDate)}}]</span></a>
+         <a class="rssblock-item-title" :href="item.link" target="_blank">{{ item.title }}  <span class="rssblock-item-date">[{{convertDateFormat(item.pubDate)}}]</span></a>
          
-         <p class="block-item-description" v-if="contentLimit > 0">
+         <p class="rssblock-item-description" v-if="contentLimit > 0">
            {{ truncate(item.description, contentLimit) }}
          </p>
        </div>
