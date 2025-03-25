@@ -14,6 +14,7 @@ const app = createApp({
             maxItemsPerFeed: 30,
             appBackgroundColor: '#392e5a',
             blockBackgroundColor: '#dbdbdb',
+            blockGradientBackgroundColor: '#dbdbdb',
             blockNameColor: '#928043',
             blockBorderColor: '#f3f3f3',
             rssHeaderColor: '#000000',
@@ -225,6 +226,7 @@ const app = createApp({
          const root = document.documentElement;
          root.style.setProperty('--app-background-color', state.globalSettings.appBackgroundColor);
          root.style.setProperty('--block-background-color', state.globalSettings.blockBackgroundColor);
+         root.style.setProperty('--block-gradient-background-color', state.globalSettings.blockGradientBackgroundColor);
          root.style.setProperty('--block-border-color', state.globalSettings.blockBorderColor);
          root.style.setProperty('--block-name-color', state.globalSettings.blockNameColor);
          root.style.setProperty('--rss-header-color', state.globalSettings.rssHeaderColor);

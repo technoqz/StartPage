@@ -57,6 +57,13 @@ const globalSettingsModal = {
             
             </label>
             <input type="color" v-model="settings.blockBackgroundColor" />
+            
+            <label>
+            Block Background gradient Color:
+            
+            </label>
+            <input type="color" v-model="settings.blockGradientBackgroundColor" />
+
             <label>
             Block Name Color:
             

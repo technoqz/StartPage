@@ -10,6 +10,7 @@
   --button-text-color: #000000;
   --rssblock-header-font-size: 16px;
   --rssblock-description-font-size: 15px;
+  --block-gradient-background-color: #e4e4e4;
 }
 body {
   background-color: var(--app-background-color);
@@ -24,6 +25,7 @@ label {
   display: block;
   margin: 10px 0;
 }
+
 textarea {
   width: 100%;
   height: 100px;
@@ -41,6 +43,7 @@ textarea {
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
   border-radius: 4px;
 }
+
 .modal-overlay {
   position: fixed;
   top: 0;
@@ -50,8 +53,18 @@ textarea {
   background: rgba(0, 0, 0, 0.5);
   z-index: 999;
 }
+
 .modal button{
    margin: 5px 5px 5px 0px;
+}
+
+.modal.modal-settings{
+   min-width: 600px;
+   min-height: 500px;
+}
+
+.modal.modal-settings textarea{
+   min-height: 400px;
 }
 
 button {
@@ -101,13 +114,12 @@ button:hover {
 
   background: linear-gradient(
       180deg,
-      rgba(231, 231, 231, 0.4) 0%,
-      rgba(202, 202, 202, 0.1) 10%,
-      rgba(223, 223, 223, 0.1) 90%,
-      rgba(242, 242, 242, 0.4) 100%
-    ),
-    var(--block-background-color);
+      var(--block-gradient-background-color) 0%,
+      var(--block-background-color) 10% 90%,
+      var(--block-gradient-background-color) 100%
+    );
 }
+
 .block.dragging {
   opacity: 0.5;
 }

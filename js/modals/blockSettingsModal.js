@@ -22,8 +22,8 @@ const blockSettingsModal = {
    },
    template: `
      <div>
-       <div class="modal-overlay v-cloak" @click="cancelSettings"></div>
-       <div class="modal v-cloak">
+       <div class="modal-overlay" @click="cancelSettings"></div>
+       <div class="modal modal-settings">
          <h2>Block Settings</h2>
          <label>
            Name:
@@ -49,8 +49,9 @@ const blockSettingsModal = {
          <div v-if="block.type === 'Bookmarks'">
            <label>
              Bookmarks (one per line, format: name####url):
-             <textarea :value="bookmarksText" @input="updateBookmarksText" placeholder="Enter bookmark URLs or name####url"></textarea>
+             
            </label>
+           <textarea :value="bookmarksText" @input="updateBookmarksText" placeholder="Enter bookmark URLs or name####url"></textarea>
          </div>
          <button @click="saveSettings">Save settings</button>
          <button @click="cancelSettings">Cancel</button>

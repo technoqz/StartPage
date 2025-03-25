@@ -18,8 +18,8 @@ const importSettingsModal = {
    },
    template: `
      <div>
-       <div class="modal-overlay v-cloak" @click="closeModal"></div>
-       <div class="modal v-cloak">
+       <div class="modal-overlay" @click="closeModal"></div>
+       <div class="modal modal-settings">
          <h2>Import Settings</h2>
          <textarea :value="importJson" @input="updateImportJson" placeholder="Paste JSON here"></textarea>
          <button @click="importSettings">Import</button>

@@ -13,8 +13,8 @@ const exportSettingsModal = {
    },
    template: `
      <div>
-       <div class="modal-overlay v-cloak" @click="closeModal"></div>
-       <div class="modal v-cloak">
+       <div class="modal-overlay" @click="closeModal"></div>
+       <div class="modal modal-settings">
          <h2>Export Settings</h2>
          <textarea readonly :value="exportJson"></textarea>
          <button @click="copyToClipboard">Copy to clipboard</button>
