@@ -366,10 +366,17 @@ const app = createApp({
             const feedData = state.rssData[feedUrl];
             if (!feedData || new Date(feedData.lastFetch).getTime() < updateThreshold) {
                const items = await fetchMethod(feedUrl);
-               state.rssData[feedUrl] = {
-                  items: items.slice(0, state.globalSettings.maxItemsPerFeed),
-                  lastFetch: now.toISOString()
-               };
+
+               // ИЗМЕНЕНИЕ: Проверяем, получены ли новые данные
+               // Обновляем состояние только если items не пустой
+               if (items && items.length > 0) {
+                  state.rssData[feedUrl] = {
+                     items: items.slice(0, state.globalSettings.maxItemsPerFeed),
+                     lastFetch: now.toISOString()
+                  };
+               }
+               // Если items пустой (ошибка загрузки), мы ничего не делаем,
+               // и старые данные в state.rssData[feedUrl] остаются нетронутыми.
             }
          }
          saveState();
