@@ -4,11 +4,11 @@ const { createApp, ref, reactive, onMounted, onUnmounted, computed, watch } = Vu
 import rssService from './services/rssService.js';
 import storageService from './services/storageService.js';
 
-// blocks
+// blocks vue
 import bookmarkBlock from './blocks/bookmarkBlock.js';
 import rssBlock from './blocks/rssBlock.js';
 
-// modals
+// modals vue
 import blockSettingsModal from './modals/blockSettingsModal.js'
 import exportSettingsModal from './modals/exportSettingsModal.js'
 import globalSettingsModal from './modals/globalSettingsModal.js'
