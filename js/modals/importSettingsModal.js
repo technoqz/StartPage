@@ -1,22 +1,22 @@
-const importSettingsModal = {
-   props: ['importJson'],
-   emits: ['import', 'close', 'update:importJson'],
-   setup(props, { emit }) {
-      const updateImportJson = (event) => {
-         emit('update:importJson', event.target.value);
-      };
+export default {
+    props: ['importJson'],
+    emits: ['import', 'close', 'update:importJson'],
+    setup(props, { emit }) {
+        const updateImportJson = (event) => {
+            emit('update:importJson', event.target.value);
+        };
 
-      return {
-         importSettings() {
-            emit('import');
-         },
-         closeModal() {
-            emit('close');
-         },
-         updateImportJson
-      };
-   },
-   template: `
+        return {
+            importSettings() {
+                emit('import');
+            },
+            closeModal() {
+                emit('close');
+            },
+            updateImportJson
+        };
+    },
+    template: `
      <div>
        <div class="modal-overlay" @click="closeModal"></div>
        <div class="modal modal-settings">

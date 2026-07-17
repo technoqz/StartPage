@@ -1,96 +1,55 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
+
+<head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Start Page for Browser</title>
     <link rel="icon" href="logo.svg" />
     <link rel="stylesheet" href="styles.css" />
-  </head>
-  <body>
+</head>
+
+<body>
     <div id="app" v-cloak>
-      <div class="top-buttons">
-        <button @click="openGlobalSettings">Global settings</button>
-        <button @click="openExportSettings">Export settings</button>
-        <button @click="openImportSettings">Import settings</button>
-        <button @click="addColumn">Add column block</button>
-      </div>
-      <div class="columns-container">
-        <div
-          class="column"
-          v-for="column in state.columns"
-          :key="column.id"
-          @dragover.prevent
-          @drop="onDrop($event, column)"
-        >
-          <div
-            class="block"
-            :class="block.type.toLowerCase()"
-            v-for="block in column.blocks"
-            :key="block.id"
-          >
-            <h2
-              draggable="true"
-              @dragstart="onDragStart($event, column, block)"
-              @dragend="onDragEnd"
-            >
-              {{ block.name }}
-            </h2>
-            <div class="block-buttons">
-              <button @click="openSettings(block)">Settings</button>
-              <button @click="deleteBlock(column, block)">Delete</button>
-            </div>
-            <bookmark-block
-              v-if="block.type === 'Bookmarks'"
-              :bookmarks="block.bookmarks"
-            ></bookmark-block>
-            <rss-block
-              v-else-if="block.type === 'RSS'"
-              :items="getBlockRssItems(block)"
-              :content-limit="block.contentLimit"
-            ></rss-block>
-          </div>
-          <button class="add-row-button" @click="addBlockToColumn(column)">
-            Add row block
-          </button>
+        <div class="top-buttons">
+            <button @click="openGlobalSettings">Global settings</button>
+            <button @click="openExportSettings">Export settings</button>
+            <button @click="openImportSettings">Import settings</button>
+            <button @click="addColumn">Add column block</button>
         </div>
-      </div>
-      <!-- Modal Components -->
-      <block-settings-modal
-        v-if="editingBlock"
-        :block="editingBlock"
-        v-model:feeds-text="feedsText"
-        v-model:bookmarks-text="bookmarksText"
-        @save="saveSettings"
-        @cancel="cancelSettings"
-      ></block-settings-modal>
-      <global-settings-modal
-        v-if="showGlobalSettings"
-        :settings="tempGlobalSettings"
-        @save="saveGlobalSettings"
-        @cancel="cancelGlobalSettings"
-      ></global-settings-modal>
-      <export-settings-modal
-        v-if="showExport"
-        :export-json="exportJson"
-        @close="showExport = false"
-        @copy="copyToClipboard"
-      ></export-settings-modal>
-      <import-settings-modal
-        v-if="showImport"
-        v-model:import-json="importJson"
-        @import="importSettings"
-        @close="showImport = false"
-      ></import-settings-modal>
+        <div class="columns-container">
+            <div class="column" v-for="column in state.columns" :key="column.id" @dragover.prevent
+                @drop="onDrop($event, column)">
+                <div class="block" :class="block.type.toLowerCase()" v-for="block in column.blocks" :key="block.id">
+                    <h2 draggable="true" @dragstart="onDragStart($event, column, block)" @dragend="onDragEnd">
+                        {{ block.name }}
+                    </h2>
+                    <div class="block-buttons">
+                        <button @click="openSettings(block)">Settings</button>
+                        <button @click="deleteBlock(column, block)">Delete</button>
+                    </div>
+                    <bookmark-block v-if="block.type === 'Bookmarks'" :bookmarks="block.bookmarks"></bookmark-block>
+                    <rss-block v-else-if="block.type === 'RSS'" :items="getBlockRssItems(block)"
+                        :content-limit="block.contentLimit"></rss-block>
+                </div>
+                <button class="add-row-button" @click="addBlockToColumn(column)">
+                    Add row block
+                </button>
+            </div>
+        </div>
+        <!-- Modal Components -->
+        <block-settings-modal v-if="editingBlock" :block="editingBlock" v-model:feeds-text="feedsText"
+            v-model:bookmarks-text="bookmarksText" @save="saveSettings" @cancel="cancelSettings"></block-settings-modal>
+        <global-settings-modal v-if="showGlobalSettings" :settings="tempGlobalSettings" @save="saveGlobalSettings"
+            @cancel="cancelGlobalSettings"></global-settings-modal>
+        <export-settings-modal v-if="showExport" :export-json="exportJson" @close="showExport = false"
+            @copy="copyToClipboard"></export-settings-modal>
+        <import-settings-modal v-if="showImport" v-model:import-json="importJson" @import="importSettings"
+            @close="showImport = false"></import-settings-modal>
     </div>
 
     <script src="https://unpkg.com/vue@3.5.13/dist/vue.global.prod.js"></script>
-    <script src="./js/blocks/bookmarkBlock.js"></script>
-    <script src="./js/blocks/rssBlock.js"></script>
-    <script src="./js/modals/blockSettingsModal.js"></script>
-    <script src="./js/modals/globalSettingsModal.js"></script>
-    <script src="./js/modals/exportSettingsModal.js"></script>
-    <script src="./js/modals/importSettingsModal.js"></script>
-    <script src="./js/app.js"></script>
-  </body>
+    <script type="module" src="./js/app.js"></script>
+</body>
+
 </html>

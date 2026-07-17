@@ -1,17 +1,17 @@
-const globalSettingsModal = {
-   props: ['settings'],
-   emits: ['save', 'cancel'],
-   setup(props, { emit }) {
-      return {
-         saveGlobalSettings() {
-            emit('save');
-         },
-         cancelGlobalSettings() {
-            emit('cancel');
-         }
-      };
-   },
-   template: `
+export default {
+    props: ['settings'],
+    emits: ['save', 'cancel'],
+    setup(props, { emit }) {
+        return {
+            saveGlobalSettings() {
+                emit('save');
+            },
+            cancelGlobalSettings() {
+                emit('cancel');
+            }
+        };
+    },
+    template: `
      <div>
        <div class="modal-overlay" @click="cancelGlobalSettings"></div>
        <div class="modal">

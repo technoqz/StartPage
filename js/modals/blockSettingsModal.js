@@ -1,26 +1,26 @@
-const blockSettingsModal = {
-   props: ['block', 'feedsText', 'bookmarksText'],
-   emits: ['save', 'cancel', 'update:feedsText', 'update:bookmarksText'],
-   setup(props, { emit }) {
-      const updateFeedsText = (event) => {
-         emit('update:feedsText', event.target.value);
-      };
-      const updateBookmarksText = (event) => {
-         emit('update:bookmarksText', event.target.value);
-      };
+export default {
+    props: ['block', 'feedsText', 'bookmarksText'],
+    emits: ['save', 'cancel', 'update:feedsText', 'update:bookmarksText'],
+    setup(props, { emit }) {
+        const updateFeedsText = (event) => {
+            emit('update:feedsText', event.target.value);
+        };
+        const updateBookmarksText = (event) => {
+            emit('update:bookmarksText', event.target.value);
+        };
 
-      return {
-         saveSettings() {
-            emit('save');
-         },
-         cancelSettings() {
-            emit('cancel');
-         },
-         updateFeedsText,
-         updateBookmarksText
-      };
-   },
-   template: `
+        return {
+            saveSettings() {
+                emit('save');
+            },
+            cancelSettings() {
+                emit('cancel');
+            },
+            updateFeedsText,
+            updateBookmarksText
+        };
+    },
+    template: `
      <div>
        <div class="modal-overlay" @click="cancelSettings"></div>
        <div class="modal modal-settings">

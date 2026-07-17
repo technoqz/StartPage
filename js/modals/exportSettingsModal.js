@@ -1,17 +1,17 @@
-const exportSettingsModal = {
-   props: ['exportJson'],
-   emits: ['close', 'copy'],
-   setup(props, { emit }) {
-      return {
-         copyToClipboard() {
-            emit('copy');
-         },
-         closeModal() {
-            emit('close');
-         }
-      };
-   },
-   template: `
+export default {
+    props: ['exportJson'],
+    emits: ['close', 'copy'],
+    setup(props, { emit }) {
+        return {
+            copyToClipboard() {
+                emit('copy');
+            },
+            closeModal() {
+                emit('close');
+            }
+        };
+    },
+    template: `
      <div>
        <div class="modal-overlay" @click="closeModal"></div>
        <div class="modal modal-settings">
