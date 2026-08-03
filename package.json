@@ -1,0 +1,25 @@
+{
+  "name": "startpageapp",
+  "version": "1.0.0",
+  "description": "Super simple starting page for any modern browser with bookmarks and RSS feeds.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/technoqz/StartPage.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/technoqz/StartPage/issues"
+  },
+  "homepage": "https://github.com/technoqz/StartPage#readme",
+  "devDependencies": {
+    "@eslint/js": "^9.39.5",
+    "eslint": "^9.39.5",
+    "globals": "^17.9.0"
+  }
+}

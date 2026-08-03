@@ -1,3 +1,4 @@
+// eslint-disable-next-line no-undef
 const { createApp, ref, reactive, onMounted, onUnmounted, computed, watch } = Vue;
 
 // services
@@ -24,7 +25,6 @@ const app = createApp({
             globalSettings: {
                 rssFetchMethod: 'api',
                 corsProxyUrl: '',
-                updateFrequency: 30, // In minutes
                 updateFrequency: 30, // In minutes
                 rssEnabled: true,
                 maxItemsPerFeed: 30,
