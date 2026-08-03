@@ -25,6 +25,8 @@ const app = createApp({
                 rssFetchMethod: 'api',
                 corsProxyUrl: '',
                 updateFrequency: 30, // In minutes
+                updateFrequency: 30, // In minutes
+                rssEnabled: true,
                 maxItemsPerFeed: 30,
                 appBackgroundColor: '#392e5a',
                 blockBackgroundColor: '#dbdbdb',
@@ -282,7 +284,15 @@ const app = createApp({
             }
         };
 
+        const toggleRss = () => {
+            state.globalSettings.rssEnabled = !state.globalSettings.rssEnabled;
+            saveState();
+            if (state.globalSettings.rssEnabled) {
+                updateFeeds();
+            }
+        };
         const updateFeeds = () => {
+            if (!state.globalSettings.rssEnabled) return;
             rssService.updateFeeds(state);
         };
 
@@ -296,8 +306,9 @@ const app = createApp({
             }
             const intervalMs = state.globalSettings.updateFrequency * 60 * 1000; // Convert minutes to milliseconds
             updateInterval = setInterval(() => {
-                //console.log('Auto-updating RSS feeds at:', new Date().toISOString()); // Debug log
-                updateFeeds();
+                if (state.globalSettings.rssEnabled) {
+                    updateFeeds();
+                }
             }, intervalMs);
         };
 
@@ -347,8 +358,10 @@ const app = createApp({
             copyToClipboard,
             openImportSettings,
             importSettings,
-            getBlockRssItems
+            getBlockRssItems,
+            toggleRss
         };
+
     }
 });
 

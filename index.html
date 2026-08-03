@@ -19,6 +19,7 @@
             <button @click="openExportSettings">Export settings</button>
             <button @click="openImportSettings">Import settings</button>
             <button @click="addColumn">Add column block</button>
+            <button @click="toggleRss">{{ state.globalSettings.rssEnabled ? 'Отключить RSS' : 'Включить RSS' }}</button>
         </div>
         <div class="columns-container">
             <div class="column" v-for="column in state.columns" :key="column.id" @dragover.prevent
