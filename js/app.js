@@ -1,4 +1,3 @@
-// eslint-disable-next-line no-undef
 const { createApp, ref, reactive, onMounted, onUnmounted, computed, watch } = Vue;
 
 // services
